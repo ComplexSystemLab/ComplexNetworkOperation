@@ -4,7 +4,7 @@
 
 import logging
 import networkx as nx
-# from numba import njit
+from numba import njit
 import numpy as np
 from typing import Optional
 from ComplexNetworkOperation.complex_network_operation.utils.altorithm_utils import kmeans

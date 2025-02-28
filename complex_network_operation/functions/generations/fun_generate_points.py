@@ -4,11 +4,10 @@
 
 import logging
 import networkx as nx
-from numba import njit
+# from numba import njit
 import numpy as np
 from typing import Optional
-# from complex_network_operation.externals import np, Optional
-from complex_network_operation.utils.altorithm_utils import kmeans_numba
+from ComplexNetworkOperation.complex_network_operation.utils.altorithm_utils import kmeans
 
 
 def generate_points(
@@ -347,7 +346,7 @@ def _generate_points_used_PoissonDisk_random_distribution_by_Kmeans_algorithm(ci
         initial_points[i] = [r * np.cos(theta) + circle_origin[0], r * np.sin(theta) + circle_origin[1]]
 
     # 使用 K-means 算法将这些点聚类到指定数量的簇中
-    centroids = kmeans_numba(initial_points, num_points)
+    centroids = kmeans(initial_points, num_points)
 
     # 返回每个簇的质心作为最终的散点
     return centroids

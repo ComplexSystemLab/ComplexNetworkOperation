@@ -4,15 +4,16 @@
 该工具实现了一些常用的算法。这些算法可以使用 Numba 进行加速。
 """
 
-from ..externals import np, plt
+import numpy as np
+import matplotlib.pyplot as plt
 # from scipy.spatial import Voronoi, voronoi_plot_2d
 from numba import njit, prange
 
 
 @njit(parallel=True)
-def kmeans_numba(points, num_clusters, max_iter=100):
+def kmeans(points, num_clusters, max_iter=100):
     """
-    使用 Numba 实现的 K-means 算法。
+    K-means 算法。基于 Numba 实现。
 
     Args:
         points (ndarray): 二维数组，每一行代表一个点。
@@ -24,7 +25,7 @@ def kmeans_numba(points, num_clusters, max_iter=100):
 
     Examples:
         >>> points = np.array([[1, 2], [3, 4], [5, 6]])
-        >>> kmeans_numba(points, 2)
+        >>> kmeans(points, 2)
     """
 
     num_points, num_dim = points.shape
@@ -116,7 +117,7 @@ if __name__ == '__main__':
 
     # 使用 K-means 算法生成 100 个散点
     num_clusters = 100
-    centroids = kmeans_numba(points, num_clusters)
+    centroids = kmeans(points, num_clusters)
     time_020 = timeit.default_timer()
     print('运行用时：', time_020 - time_010)
 

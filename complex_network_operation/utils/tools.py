@@ -24,7 +24,6 @@ import pickle
 import base64
 import subprocess
 import chardet
-# from complex_network_operation.externals import sys, os, logging, time, Path, itertools, pkgutil, importlib, re, np, pd, random, string, shutil, locale, Union, DataFrame, pickle, base64, subprocess, chardet
 
 pass  # end import
 

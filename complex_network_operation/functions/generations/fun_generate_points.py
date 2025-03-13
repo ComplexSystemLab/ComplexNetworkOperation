@@ -50,6 +50,10 @@ def generate_points(
         hierarchical_network_type: bool, 是否是层次网络
         num_external_nodes: int, 外部节点的数量
 
+    Examples:
+        points = generate_points(set_numPoints=100, set_circleRadius=500, circle_origin=np.array([0, 0]), distribution='Normal')
+        print(points)
+
     Returns:
         np.ndarray: 生成的散点
 

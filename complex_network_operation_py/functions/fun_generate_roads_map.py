@@ -1,9 +1,9 @@
 """
 函数：生成路网地图。
 """
-from complex_network_operation.functions.generations.fun_generate_networks import generate_network
-from complex_network_operation.functions.generations.fun_generate_networks import _generate_weighted_voronoi_network, _calculate_distance_matrix
-from complex_network_operation.utils.altorithm_utils import find_nearest_point
+from complex_network_operation_py.functions.generations.fun_generate_networks import generate_network
+from complex_network_operation_py.functions.generations.fun_generate_networks import _generate_weighted_voronoi_network, _calculate_distance_matrix
+from complex_network_operation_py.utils.altorithm_utils import find_nearest_point
 
 import numpy as np
 from pathlib import Path

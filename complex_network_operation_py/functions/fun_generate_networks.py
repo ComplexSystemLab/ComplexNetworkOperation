@@ -6,7 +6,7 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 # from numba import njit
-from complex_network_operation.functions.generations.fun_generate_points import generate_points
+from complex_network_operation_py.functions.generations.fun_generate_points import generate_points
 from scipy.spatial import Voronoi, voronoi_plot_2d
 # import matplotlib
 # matplotlib.use('TkAgg')

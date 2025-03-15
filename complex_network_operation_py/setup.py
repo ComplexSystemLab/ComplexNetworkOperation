@@ -1,9 +1,12 @@
+import os
 from setuptools import setup, find_packages
 
 setup(
     name='ComplexNetworkOperation',
     version='0.0.1',
+    # packages=find_packages(where='complex_network_operation_py', exclude=['tests', 'docs', 'examples']),
     packages=find_packages(),
+    # package_dir={'': 'complex_network_operation_py'},
     install_requires=[
         'numpy',
         'pandas',
@@ -32,8 +35,8 @@ setup(
     ],
     author='Complex System Explorer',
     author_email='',  # TODO
-    description='复杂系统实验室。提供探索、研究、展示、可视化各类复杂系统。',
-    long_description=open('README.md').read(),
+    description='Python版本的复杂网络运作库。',
+    long_description=open('README.md').read() if os.path.exists('README.md') else '',
     long_description_content_type='text/markdown',
     url='https://github.com/ComplexSystemLab/ComplexNetworkOperation.git',
     classifiers=[

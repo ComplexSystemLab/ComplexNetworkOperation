@@ -1,5 +1,5 @@
 /**
- * 函数：生成网络功能
+ * 函数：生成网络功能。
  */
 
 import * as d3 from 'd3';
@@ -7,38 +7,19 @@ import {Delaunay} from 'd3-delaunay';
 import {generatePoints} from './fun_generate_points.js';
 
 /**
- * 生成不同机制的、不同网络连接结构的，具有 D3 图数据类型的图网络。
+ * Generates a network with various connection structures and D3 graph data types.
  *
- * 这个方法的步骤是：
- * 1. 获取节点之坐标；
- * 2. 根据网络生成机制生成网络之连边；
- *
- * - 网络连接结构 networkType 有以下可选项：
- *     - 'Random': 随机生成网络
- *     - 'Voronoi': 使用 Voronoi 图生成网络；
- *     - 'Complete': 使用完全图生成网络；
- *     - 'Random': 使用随机图生成网络；
- *     - 'Community Structure': 使用社区结构生成网络；
- *     - 'Small World': 使用小世界网络生成网络；
- *     - 'Scale Free': 使用无标度网络生成网络；
- *     - 'Hierarchical': 使用分层网络生成网络；
- *     - 'Regular': 使用规则网络生成网络；
- *     - 'Grid': 使用网格网络生成网络；
- *     - 'Scale Free': 使用无标度网络生成网络；
- *
- * @param {Array} nodesPos 节点坐标
- * @param {string} graphDirectionType 图的方向类型。默认是 'undirected' 。可选值有：
- *     - 'directed': 有向图
- *     - 'undirected': 无向图
- * @param {number} setNumEdges 设置边数量
- * @param {number} setNumInterpolatedDensityDistance 设置插值密度距离
- * @param {number} numEdgesPerNode 每个节点的边数量
- * @param {number} numNeighbors 邻居节点数量
- * @param {string} networkMechanism 网络生成机制。默认是 Voronoi 图。
- * @param {string} networkType 网络连接结构。默认是 Voronoi 图。
- * @param {boolean} hierarchical 是否生成分层网络。默认是 False。
- * @param {boolean} isPreviewPlot 是否预览绘制。默认是 False。
- * @returns {Object} 图网络。图网络有两种可能的类型：有向图或者无向图。
+ * @param {Array} nodesPos Node positions.
+ * @param {string} graphDirectionType Graph direction type, default is 'undirected'.
+ * @param {number} setNumEdges Number of edges to set.
+ * @param {number} setNumInterpolatedDensityDistance Interpolated density distance.
+ * @param {number} numEdgesPerNode Number of edges per node.
+ * @param {number} numNeighbors Number of neighbors.
+ * @param {string} networkMechanism Network generation mechanism, default is 'Voronoi'.
+ * @param {string} networkType Network connection structure, default is 'Voronoi'.
+ * @param {boolean} hierarchical Whether to generate a hierarchical network, default is false.
+ * @param {boolean} isPreviewPlot Whether to preview the plot, default is false.
+ * @returns {Object} Graph network.
  */
 function generateNetwork(nodesPos, graphDirectionType = 'undirected', setNumEdges = null, setNumInterpolatedDensityDistance = null, numEdgesPerNode = null, numNeighbors = null, networkMechanism = 'Voronoi', networkType = 'Voronoi', hierarchical = false, isPreviewPlot = false) {
     let g;
@@ -53,7 +34,7 @@ function generateNetwork(nodesPos, graphDirectionType = 'undirected', setNumEdge
             throw new Error(`Unsupported graph direction type: ${graphDirectionType}`);
     }
 
-    // Add nodes
+    // 添加节点
     nodesPos.forEach((nodePos, i) => {
         g.set(i, {
             id: i,
@@ -76,7 +57,7 @@ function generateNetwork(nodesPos, graphDirectionType = 'undirected', setNumEdge
             throw new Error(`Unsupported network type: ${networkType}`);
     }
 
-    // Add edges
+    // 添加边
     edges.forEach((edge, i) => {
         const [node1, node2] = edge;
         g.get(node1).edges.push({
@@ -101,12 +82,12 @@ function generateNetwork(nodesPos, graphDirectionType = 'undirected', setNumEdge
 }
 
 /**
- * 生成加权的 Voronoi 图网络。
+ * Generates a weighted Voronoi network.
  *
- * @param {Array} nodesPos 节点坐标
- * @param {Array} weights 权重
- * @param {boolean} isPreviewPlot 是否预览绘制
- * @returns {Object} 边集合和 Voronoi 类数据
+ * @param {Array} nodesPos Node positions.
+ * @param {Array} weights Weights.
+ * @param {boolean} isPreviewPlot Whether to preview the plot.
+ * @returns {Object} Edges and Voronoi data.
  */
 function generateWeightedVoronoiNetwork(nodesPos, weights = null, isPreviewPlot = false) {
     if (!weights) {
@@ -122,9 +103,10 @@ function generateWeightedVoronoiNetwork(nodesPos, weights = null, isPreviewPlot 
     if (!vor) {
         throw new Error('Failed to generate Voronoi diagram: vor is null');
     }
-    if (!vor.edges || !Array.isArray(vor.edges)) {
-        console.error('vor:', vor);
-        throw new Error('Failed to generate Voronoi diagram: vor.edges is not an array');
+
+    // 验证 vor.edges
+    if (!Array.isArray(vor.edges)) {
+        throw new Error(`Failed to generate Voronoi diagram: Expected 'vor.edges' to be an array, but got ${typeof vor.edges}`);
     }
 
     if (isPreviewPlot) {

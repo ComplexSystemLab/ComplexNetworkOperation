@@ -1,10 +1,28 @@
-import { generatePoints } from '../functions/fun_generate_points.js';
-import { generateNetwork } from '../functions/fun_generate_networks.js';
+import {generatePoints} from '../functions/fun_generate_points.js';
+import {generateRoadsNetworkByMechanism} from '../functions/fun_generate_roads_map.js';
 
-// Example usage of the generatePoints function
-const points = generatePoints(null, 100, 50, [0, 0], 30, 'Normal');
-// console.log('Generated Points:', points); // #DEBUG
+// Parameter settings
+const setWorldCircleRadius = 500;
+const setWorldCircleDensityDistance = 250;
+const setWorldCityNumInterpolatedDensityDistance = 10.0;
 
-// Example usage of the generateNetwork function
-const network = generateNetwork(points, 'undirected', null, null, null, null, 'Voronoi', 'Voronoi', false);
-console.log('Generated Network:', network);
+// Generate positions of city nodes
+const cityNodesPos = generatePoints(
+    null, // set_numPoints
+    setWorldCircleDensityDistance, // set_densityDistance
+    setWorldCircleRadius, // set_circleRadius
+    [0, 0], // circle_origin
+    null, // set_city_circle_radius (not applicable here)
+    'Poisson Disk' // distribution
+);
+
+// Generate the top-level traffic network between cities
+const {network: gWorldCityTrafficNetwork, interpolatedPoints: cityNetworksInterpolatedPoints} = generateRoadsNetworkByMechanism(
+    cityNodesPos, // nodes_pos
+    setWorldCityNumInterpolatedDensityDistance, // set_num_interpolated_density_distance
+    true // is_preview_plot
+);
+
+console.log('Generated City Nodes Positions:', cityNodesPos);
+console.log('Generated World City Traffic Network:', gWorldCityTrafficNetwork);
+console.log('Interpolated Points:', cityNetworksInterpolatedPoints);

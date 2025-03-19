@@ -1,27 +1,27 @@
 import * as d3 from 'd3';
+import {kmeans} from '../utils/algorithm_utils.js';
 
 /**
  * 函数：生成散点分布
  */
 
 
-
 /**
  * 根据一系列初始条件与给定分布生成符合要求的散点。
- * 
+ *
  * 这里估算的过程中，采用了正方形、立方体作为中间计算量，然后转换为同面积、同体积的圆形、球体。
- * 
+ *
  * 散点分布类型：
  * - 'Posssion Disk': 生成符合 Poisson Disk 分布的散点。这种分布的特点是，散点之间的距离大致相等，且散点之间的距离大于给定的最小距离。
  * - 'Uniform': 生成符合均匀分布的散点。这种分布的特点是，散点之间的距离大致相等，但散点之间的距离不一定大于给定的最小距离。
  * - 'Normal': 生成符合正态分布的散点。这种分布的特点是，散点之间的距离大致符合正态分布，但散点之间的距离不一定大于给定的最小距离。
- * 
+ *
  * 散点分布相关的算法类型：
  * - 'Bridson': 采用 Bridson 算法生成符合 Poisson Disk 分布的散点。该算法的特点是生成的散点距离一定满足不小于最小距离，但是生成的散点数量不一定等于给定的数量；
  * - 'cKDTree': 采用 cKDTree 算法生成符合 Poisson Disk 分布的散点。该算法的特点是生成的散点距离一定满足不小于最小距离，但是生成的散点数量不一定等于给定的数量；#BUG 这个还没有适配生成圆形边界的情况。因此不要使用！
  * - 'K-means': 采用 K-means 算法生成符合接近 Poisson Disk 分布的散点。该算法的特点是能够生成精确数量的散点，并且生成性能较高；
  * - 'annealing': 采用退火算法生成符合 Poisson Disk 分布的散点。该算法的特点是能够生成精确数量的散点，但是生成性能较差； #BUG 还没有测试。因此不要使用！
- * 
+ *
  * @param {number} set_densityDistance - 密度距离
  * @param {number} set_numPoints - 散点总数。注意实际生成的数量大约在这个值附近，不会完全等于这个值。
  * @param {number} set_circleRadius - 范围半径
@@ -32,11 +32,11 @@ import * as d3 from 'd3';
  * @param {number} sigma - 正态分布的标准差
  * @param {boolean} hierarchical_network_type - 是否是层次网络
  * @param {number} num_external_nodes - 外部节点的数量
- * 
+ *
  * @example
  * const points = generatePoints({ set_numPoints: 100, set_circleRadius: 500, circle_origin: [0, 0], distribution: 'Normal' });
  * console.log(points);
- * 
+ *
  * @returns {Array} 生成的散点。散点数据结构形式为：[[x1, y1], [x2, y2], ...]
  */
 function generatePoints(setDensityDistance = null, setNumPoints = null, setCircleRadius = null, circleOrigin = [0, 0], numSamples = 30, distribution = 'Normal', algorithm = null, sigma = 1, hierarchicalNetworkType = false, numExternalNodes = 0) {
@@ -93,7 +93,7 @@ function generatePoints(setDensityDistance = null, setNumPoints = null, setCircl
 
 /**
  * 生成符合正态分布的散点。
- * 
+ *
  * @param {Array} circle_origin - 圆心坐标
  * @param {number} circle_radius - 圆的半径
  * @param {number} num_points - 生成的点的数量
@@ -112,7 +112,7 @@ function generatePointsUsingNormalRandomDistribution(circleOrigin, circleRadius,
 
 /**
  * 生成符合均匀分布的散点。
- * 
+ *
  * @param {Array} circle_origin - 圆心坐标
  * @param {number} circle_radius - 圆的半径
  * @param {number} num_points - 生成的点的数量
@@ -130,7 +130,7 @@ function generatePointsUsingUniformRandomDistribution(circleOrigin, circleRadius
 
 /**
  * 采用 Bridson 算法生成符合 Poisson Disk 分布的散点。
- * 
+ *
  * @param {Array} origin - 圆心坐标
  * @param {number} radius - 圆的半径
  * @param {number} min_distance - 最小距离
@@ -140,7 +140,7 @@ function generatePointsUsingUniformRandomDistribution(circleOrigin, circleRadius
 function generatePointsUsingPoissonDiskRandomDistributionByBridsonAlgorithm(origin, radius, minDistance, numSamples = 15) {
     const cellSize = minDistance / Math.sqrt(2);
     const gridRadius = Math.floor(radius / cellSize) + 1;
-    const grid = Array.from({ length: 2 * gridRadius }, () => Array(2 * gridRadius).fill(-1));
+    const grid = Array.from({length: 2 * gridRadius}, () => Array(2 * gridRadius).fill(-1));
     const activeList = [];
     const samples = [];
     let sampleCount = 0;
@@ -179,7 +179,7 @@ function generatePointsUsingPoissonDiskRandomDistributionByBridsonAlgorithm(orig
 
 /**
  * 采用 Bridson 算法生成一个距离给定点一定距离的随机点。
- * 
+ *
  * @param {Array} point - 中心点
  * @param {number} min_distance - 最小距离
  * @returns {Array} 生成的随机点
@@ -192,7 +192,7 @@ function generateRandomPointAroundByBridsonAlgorithm(point, minDistance) {
 
 /**
  * 判断生成的散点是否有效。
- * 
+ *
  * @param {Array} sample - 生成的散点
  * @param {number} radius - 圆的半径
  * @param {number} min_distance - 最小距离
@@ -225,7 +225,7 @@ function isValidSampleByBridsonAlgorithm(sample, radius, minDistance, samples, g
 
 /**
  * 获取邻居散点的索引。
- * 
+ *
  * @param {Array} index - 索引
  * @param {number} grid_width - 网格宽度
  * @param {number} grid_height - 网格高度
@@ -247,7 +247,7 @@ function getNeighborIndices(index, gridWidth, gridHeight) {
 
 /**
  * 采用 K-means 算法生成符合 Poisson Disk 分布的散点。
- * 
+ *
  * @param {Array} circle_origin - 圆心坐标
  * @param {number} circle_radius - 圆的半径
  * @param {number} num_points - 生成的点的数量
@@ -262,61 +262,62 @@ function generatePointsUsingPoissonDiskRandomDistributionByKmeansAlgorithm(circl
         initialPoints.push([r * Math.cos(theta) + circleOrigin[0], r * Math.sin(theta) + circleOrigin[1]]);
     }
 
-    const centroids = d3.cluster().kmeans(initialPoints, numPoints);
+    const centroids = kmeans(initialPoints, numPoints);
     return centroids;
 }
 
-/**
- * 实现 K-means 算法。
- * 
- * @param {Array} points - 二维数组，每一行代表一个点。
- * @param {number} num_clusters - 聚类的数量。
- * @param {number} max_iter - 最大迭代次数。
- * @returns {Array} 每一行代表一个质心。
- */
-function kmeans(points, num_clusters, max_iter = 100) {
-    const num_points = points.length;
-    const num_dim = points[0].length;
-    let centroids = points.slice(0, num_clusters);
-
-    for (let iter = 0; iter < max_iter; iter++) {
-        const distances = Array.from({ length: num_points }, () => Array(num_clusters).fill(0));
-        for (let i = 0; i < num_points; i++) {
-            for (let j = 0; j < num_clusters; j++) {
-                distances[i][j] = points[i].reduce((sum, val, dim) => sum + Math.pow(val - centroids[j][dim], 2), 0);
-            }
-        }
-
-        const labels = distances.map(row => row.indexOf(Math.min(...row)));
-
-        const new_centroids = Array.from({ length: num_clusters }, () => Array(num_dim).fill(0));
-        const counts = Array(num_clusters).fill(0);
-        for (let i = 0; i < num_points; i++) {
-            const label = labels[i];
-            counts[label]++;
-            for (let dim = 0; dim < num_dim; dim++) {
-                new_centroids[label][dim] += points[i][dim];
-            }
-        }
-
-        for (let j = 0; j < num_clusters; j++) {
-            for (let dim = 0; dim < num_dim; dim++) {
-                new_centroids[j][dim] /= counts[j] || 1;
-            }
-        }
-
-        if (centroids.every((centroid, j) => centroid.every((val, dim) => val === new_centroids[j][dim]))) {
-            break;
-        }
-        centroids = new_centroids;
-    }
-
-    return centroids;
-}
+//
+// /**
+//  * 实现 K-means 算法。
+//  *
+//  * @param {Array} points - 二维数组，每一行代表一个点。
+//  * @param {number} num_clusters - 聚类的数量。
+//  * @param {number} max_iter - 最大迭代次数。
+//  * @returns {Array} 每一行代表一个质心。
+//  */
+// function kmeans(points, num_clusters, max_iter = 100) {
+//     const num_points = points.length;
+//     const num_dim = points[0].length;
+//     let centroids = points.slice(0, num_clusters);
+//
+//     for (let iter = 0; iter < max_iter; iter++) {
+//         const distances = Array.from({length: num_points}, () => Array(num_clusters).fill(0));
+//         for (let i = 0; i < num_points; i++) {
+//             for (let j = 0; j < num_clusters; j++) {
+//                 distances[i][j] = points[i].reduce((sum, val, dim) => sum + Math.pow(val - centroids[j][dim], 2), 0);
+//             }
+//         }
+//
+//         const labels = distances.map(row => row.indexOf(Math.min(...row)));
+//
+//         const new_centroids = Array.from({length: num_clusters}, () => Array(num_dim).fill(0));
+//         const counts = Array(num_clusters).fill(0);
+//         for (let i = 0; i < num_points; i++) {
+//             const label = labels[i];
+//             counts[label]++;
+//             for (let dim = 0; dim < num_dim; dim++) {
+//                 new_centroids[label][dim] += points[i][dim];
+//             }
+//         }
+//
+//         for (let j = 0; j < num_clusters; j++) {
+//             for (let dim = 0; dim < num_dim; dim++) {
+//                 new_centroids[j][dim] /= counts[j] || 1;
+//             }
+//         }
+//
+//         if (centroids.every((centroid, j) => centroid.every((val, dim) => val === new_centroids[j][dim]))) {
+//             break;
+//         }
+//         centroids = new_centroids;
+//     }
+//
+//     return centroids;
+// }
 
 /**
  * 生成层次网络节点。
- * 
+ *
  * @param {Array} circle_origin - 圆心坐标
  * @param {number} circle_radius - 圆的半径
  * @param {number} num_points - 生成的点的数量
@@ -343,4 +344,4 @@ function generateHierarchicalNetworkNodes(circleOrigin, circleRadius, numPoints,
     return externalPoints.concat(internalPoints);
 }
 
-export { generatePoints };
+export {generatePoints};

@@ -19,7 +19,12 @@ const cityNodesPos = generatePoints(
 // Generate the top-level traffic network between cities
 const {network: gWorldCityTrafficNetwork, interpolatedPoints: cityNetworksInterpolatedPoints} = generateRoadsNetworkByMechanism(
     cityNodesPos, // nodes_pos
+    null, // set_numRoadEdges (not applicable here)
     setWorldCityNumInterpolatedDensityDistance, // set_num_interpolated_density_distance
+    null, // numRoadEdgesPerNode (not applicable here)
+    null, // numNeighbors (not applicable here)
+    'Voronoi', // roadsNetworkMechanism
+    'Voronoi', // networkType
     true // is_preview_plot
 );
 

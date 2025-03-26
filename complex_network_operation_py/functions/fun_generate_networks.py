@@ -84,7 +84,7 @@ def generate_network(nodes_pos: np.ndarray, graph_direction_type='undirected', s
             id=i,
             name=str(i),
             type='node',
-            pos=node_pos.copy(),
+            pos=node_pos.copy().tolist(),
             color_name='red',
         )
 

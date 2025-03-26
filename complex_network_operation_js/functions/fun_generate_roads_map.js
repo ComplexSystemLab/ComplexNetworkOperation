@@ -58,7 +58,7 @@ export function generateRoadsNetworkByMechanism(
     networkType = 'Voronoi',
     isPreviewPlot = false
 ) {
-    let [g, voronoiGraph] = generateNetwork(nodesPos, 'directed', 'Voronoi', isPreviewPlot);
+    const {graph: g, vor} = generateNetwork(nodesPos, 'directed', setNumRoadEdges, setNumInterpolatedDensityDistance, numRoadEdgesPerNode, numNeighbors, roadsNetworkMechanism, networkType, false, isPreviewPlot);
 
     for (let edge of g.edges) {
         let node1 = nodesPos[edge[0]];
@@ -492,4 +492,5 @@ function interpolatePointsAlongPixelsPath(pixels, distance) {
     }
     return interpolatedPoints;
 }
+
 

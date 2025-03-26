@@ -127,6 +127,15 @@ def generate_roadsNetwork_by_machanism(
         g.edges[edge]['interpolated_points_path_length'] = interpolated_points_path_length[::-1]  # 插值点到关键节点路径长度
         pass  # for i, edge
 
+    # 将 `g.edges[edge]['interpolated_points']` 与 `g.edges[edge]['interpolated_points_path_length'] ` 转换为 python list
+    for edge in g.edges:
+        g.edges[edge]['interpolated_points'] = g.edges[edge]['interpolated_points'].tolist()
+        g.edges[edge]['interpolated_points_path_length'] = g.edges[edge]['interpolated_points_path_length'].tolist()
+        pass  # for
+    for node in g.nodes:
+        g.nodes[node]['pos'] = g.nodes[node]['pos'].tolist()
+        pass  # for
+
     # if level < max_levels:
     #     for node in g.nodes:
     #         sub_nodes_pos = generate_points(

@@ -7,7 +7,7 @@ import networkx as nx
 from numba import njit
 import numpy as np
 from typing import Optional
-from complex_network_operation_py.utils.altorithm_utils import kmeans
+from complex_network_operation_py.utils.algorithm_utils import kmeans
 
 
 def generate_points(

@@ -104,9 +104,10 @@ function generateWeightedVoronoiNetwork(nodesPos, weights = null, isPreviewPlot 
         throw new Error('Failed to generate Voronoi diagram: vor is null');
     }
 
-    // 验证 vor.edges
-    if (!Array.isArray(vor.edges)) {
-        throw new Error(`Failed to generate Voronoi diagram: Expected 'vor.edges' to be an array, but got ${typeof vor.edges}`);
+    // 修复：确保 vor.edges 存在
+    if (!vor.edges || typeof vor.edges !== 'object') {
+        console.warn('Warning: vor.edges is undefined. Returning an empty edge list.');
+        return { edges: [], vor };
     }
 
     if (isPreviewPlot) {
@@ -134,7 +135,7 @@ function generateWeightedVoronoiNetwork(nodesPos, weights = null, isPreviewPlot 
     }
 
     const edges = vor.edges.map(edge => [edge[0], edge[1]]);
-    return {edges, vor};
+    return { edges, vor };
 }
 
 export {generateNetwork};

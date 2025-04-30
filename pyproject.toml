@@ -1,0 +1,13 @@
+[project]
+name = "complexnetworkoperation"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.10.1",
+    "networkx>=3.4.2",
+    "numba>=0.61.2",
+    "numpy>=2.2.5",
+    "pillow>=11.2.1",
+    "scikit-image>=0.25.2",
+]
